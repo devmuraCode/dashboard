@@ -6,8 +6,6 @@ const ToasterProvider = () => {
         position="top-right"
         reverseOrder={false}
         gutter={8}
-        containerClassName=""
-        containerStyle={{}}
         toastOptions={{
           className: "",
           duration: 5000,
