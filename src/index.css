@@ -11,6 +11,6 @@
 .head-bg{
   background: url("./assets/headbg.png") no-repeat center center/cover;
   width: 60%;
-  height: 64rem;
+  height: 100vh;
 }
 

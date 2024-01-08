@@ -1,7 +1,6 @@
 import axios  from "axios";
 import { Navigate } from "react-router-dom";
 import { ACCESS_TOKEN_KEY, ROUTES } from "../../constants";
-
 export const httpClient = axios.create({
   baseURL: "https://api.statistics.splay.uz",
   withCredentials: true,
@@ -15,6 +14,7 @@ httpClient.interceptors.request.use((config) => {
     config.headers = Object.assign(config.headers, { Authorization: "Bearer " + token });
     return config;
   } else {
+    
     return config;
   }
 });
@@ -31,14 +31,9 @@ httpClient.interceptors.response.use(
       if (status === 401) {
         Navigate({to: ROUTES.USER_SIGN_IN});
       } else if (status === 403) {
-        // notificationError(
-        //   i18n.t("notifications.error"),
-        //   i18n.t("fields.youDoNotHaveNecessaryPermissionPleaseContactYourAdministrator"),
-        // );
         alert('Something when wrong')
       } else if (status >= 400) {
         if (error.response) {
-        //   notificationError(i18n.t("notifications.error"), error.response.data.detail  error.response.data.title);
         alert('Something when wrong')
 
         }
