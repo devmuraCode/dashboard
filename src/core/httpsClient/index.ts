@@ -1,7 +1,6 @@
 import axios from "axios";
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from "../../constants";
 import toast from "react-hot-toast";
-// import { router } from "../../routers/router";
 
 export const httpClient = axios.create({
   baseURL: "https://api.statistics.splay.uz",
@@ -22,6 +21,9 @@ httpClient.interceptors.request.use((config) => {
 
 httpClient.interceptors.response.use(
   (response) => {
+    toast.loading(`${"Right"}\n${"The enter the wrong password again "}`);  
+    console.log(response);
+
     return response;
   },
   async (error) => {
@@ -44,7 +46,7 @@ httpClient.interceptors.response.use(
 
           const { accessToken } = rs.data;
           localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-
+          
           return httpClient(originalConfig);
         } catch (_error) {
           return Promise.reject(_error);

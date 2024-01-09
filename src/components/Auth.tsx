@@ -2,6 +2,8 @@ import logo from "../assets/logo.svg";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useAppDispatch } from "../store/store";
 import { postData } from "../services/postUser";
+import Button from "../ui/button/Button";
+import { useState } from "react";
 
 type Inputs = {
   username: string;
@@ -11,9 +13,20 @@ type Inputs = {
 const Auth = () => {
   const dispatch = useAppDispatch();
   const { register, handleSubmit } = useForm<Inputs>();
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    return dispatch(postData(data));
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    if (!isButtonDisabled) {
+      setButtonDisabled(false);
+      try {
+        await dispatch(postData(data));
+      } catch (error) {
+        console.log(error);
+        
+      } finally {
+        setButtonDisabled(true);
+      }
+    }
   };
 
   return (
@@ -49,9 +62,7 @@ const Auth = () => {
                 required
               />
             </div>
-            <button type="submit" className="w-full md:w-auto py-[13px] md:px-[164px] rounded-xl bg-white sides border-0 font-roboto font-medium text-[1.5rem] leading-label mt-28">
-              Войти
-            </button>
+            <Button onClick={handleSubmit(onSubmit) } label="Войти" disabled={isButtonDisabled}/>
           </form>
         </div>
       </div>

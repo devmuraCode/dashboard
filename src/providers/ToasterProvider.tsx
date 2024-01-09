@@ -8,7 +8,7 @@ const ToasterProvider = () => {
         gutter={8}
         toastOptions={{
           className: "",
-          duration: 5000,
+          duration: 3000,
           style: {
             background: "#fff",
             color: "#000",
