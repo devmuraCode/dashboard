@@ -1,14 +1,15 @@
-import { configureStore } from '@reduxjs/toolkit'
-import userAuthSlice from './slice/userAuthSlice'
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
+import { configureStore } from "@reduxjs/toolkit";
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { StateSchema } from "./StateSchema";
+import { loginReducer } from "../features/AuthByUserName/model/slice/userAuthSlice";
 
-export const store = configureStore({
+export const store = configureStore<StateSchema>({
   reducer: {
-    users: userAuthSlice,
+    loginForm: loginReducer,
   },
-})
+});
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

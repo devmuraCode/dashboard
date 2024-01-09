@@ -1,9 +1,9 @@
-import logo from "../assets/logo.svg";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { useAppDispatch } from "../store/store";
-import { userLogin } from "../services/userLogin";
-import Button from "../ui/button/Button";
-import { useState } from "react";
+import { useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
+import Button from "../../../ui/button/Button";
+import { loginUser } from "../model/servic/loginUser";
 
 type Inputs = {
   username: string;
@@ -11,22 +11,22 @@ type Inputs = {
 };
 
 const Auth = () => {
+  const navigate = useNavigate();
+
   const dispatch = useAppDispatch();
+  const loginForm = useAppSelector((state) => state.loginForm);
+
   const { register, handleSubmit } = useForm<Inputs>();
-  const [isButtonDisabled, setButtonDisabled] = useState(false);
+
+  useEffect(() => {
+    if (loginForm.fulfilled) {
+      navigate("/");
+    }
+  }, [loginForm.fulfilled]);
+
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    if (!isButtonDisabled) {
-      setButtonDisabled(false);
-      try {
-        await dispatch(userLogin(data));
-      } catch (error) {
-        console.log(error);
-        
-      } finally {
-        setButtonDisabled(true);
-      }
-    }
+    await dispatch(loginUser(data));
   };
 
   return (
@@ -34,12 +34,18 @@ const Auth = () => {
       <div className="head-bg"></div>
       <div className="w-full md:w-[34.5rem] h-full md:h-[100vh] bg-blue rounded-tl-[2.5rem] md:rounded-tl-[2.5rem] rounded-tr-[2.5rem] md:rounded-tr-none rounded-bl-none md:rounded-bl-[2.5rem]">
         <div className="flex justify-center mt-[7rem]">
-          <img src={logo} alt="Logo" />
+          {/* <img src={logo} alt="Logo" /> */}
         </div>
         <div className="flex justify-center items-center">
-          <form onSubmit={handleSubmit(onSubmit)} className="w-full md:w-auto px-4 md:px-0">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="w-full md:w-auto px-4 md:px-0"
+          >
             <div>
-              <label htmlFor="login" className="block font-inter font-normal text-3xl leading-label text-white">
+              <label
+                htmlFor="login"
+                className="block font-inter font-normal text-3xl leading-label text-white"
+              >
                 Логин
               </label>
               <input
@@ -51,7 +57,10 @@ const Auth = () => {
               />
             </div>
             <div className="mt-[2rem]">
-              <label htmlFor="Password" className="block font-inter font-normal text-3xl leading-label text-white">
+              <label
+                htmlFor="Password"
+                className="block font-inter font-normal text-3xl leading-label text-white"
+              >
                 Пароль
               </label>
               <input
@@ -62,7 +71,11 @@ const Auth = () => {
                 required
               />
             </div>
-            <Button onClick={handleSubmit(onSubmit) } label="Войти" disabled={isButtonDisabled}/>
+            <Button
+              onClick={handleSubmit(onSubmit)}
+              label="Войти"
+              disabled={false}
+            />
           </form>
         </div>
       </div>
