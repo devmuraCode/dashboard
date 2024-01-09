@@ -1,5 +1,5 @@
 import AuthPage from '../pages/AuthPage';
-import ToasterProvider from '../providers/ToasterProvider'
+import ToasterProvider from '../app/providers/ToasterProvider'
 
 const MainLayout = () => {
   return (

@@ -1,6 +1,6 @@
-import About from "./components/About";
+import About from "../components/About";
 import { useRoutes } from "react-router-dom";
-import MainLayout from "./layout/layout";
+import MainLayout from "../layout/layout";
 
 const App = () => {
   const element = useRoutes([

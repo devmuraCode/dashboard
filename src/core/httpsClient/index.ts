@@ -21,9 +21,9 @@ httpClient.interceptors.request.use((config) => {
 
 httpClient.interceptors.response.use(
   (response) => {
+
     toast.loading(`${"Right"}\n${"The enter the wrong password again "}`);  
     console.log(response);
-
     return response;
   },
   async (error) => {

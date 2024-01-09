@@ -1,7 +1,7 @@
 import logo from "../assets/logo.svg";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useAppDispatch } from "../store/store";
-import { postData } from "../services/postUser";
+import { userLogin } from "../services/userLogin";
 import Button from "../ui/button/Button";
 import { useState } from "react";
 
@@ -19,7 +19,7 @@ const Auth = () => {
     if (!isButtonDisabled) {
       setButtonDisabled(false);
       try {
-        await dispatch(postData(data));
+        await dispatch(userLogin(data));
       } catch (error) {
         console.log(error);
         
