@@ -21,38 +21,44 @@ httpClient.interceptors.request.use((config) => {
 
 httpClient.interceptors.response.use(
   (response) => {
-
-    toast.loading(`${"Right"}\n${"The enter the wrong password again "}`);  
-    console.log(response);
+    toast.loading(`${"Right"}\n${"The enter the wrong password again "}`);
     return response;
   },
   async (error) => {
     const originalConfig = error.config;
     toast.error(error.response.data.detail);
-    
-    if (originalConfig.url === "/api/token" && error.response) {
-      if (error.response.status === 401 && !originalConfig._retry) {
+
+      if ((error.response.status === 403 || error.response.status === 401) && !originalConfig._retry) {
         originalConfig._retry = true;
         const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
+
         if (!refreshToken) {
-          toast.error(error.response.data.detail);
+          toast.error("Refresh token is missing");
           originalConfig._retry = false;
           return Promise.reject(error);
         }
+
         try {
-          const rs = await httpClient.post("/api/token/refresh/", {
+          const refreshResponse = await httpClient.post("/api/token/refresh/", {
             refresh: refreshToken,
           });
 
-          const { accessToken } = rs.data;
-          localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-          
+          const newAccessToken = refreshResponse.data.access;
+
+          localStorage.setItem(ACCESS_TOKEN_KEY, newAccessToken);
+
+          originalConfig.headers = Object.assign(originalConfig.headers, {
+            Authorization: "Bearer " + newAccessToken,
+          }); 
+
           return httpClient(originalConfig);
-        } catch (_error) {
-          return Promise.reject(_error);
+        } catch (refreshError) {
+          toast.error("Failed to refresh token");
+          return Promise.reject(refreshError);
         }
-      }
+      
     }
     return Promise.reject(error);
   }
 );
+

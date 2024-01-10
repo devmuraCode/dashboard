@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import logo from "../../../assets/logo.svg";
+import {  useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../store/store";
@@ -12,7 +13,6 @@ type Inputs = {
 
 const Auth = () => {
   const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
   const loginForm = useAppSelector((state) => state.loginForm);
 
@@ -22,11 +22,10 @@ const Auth = () => {
     if (loginForm.fulfilled) {
       navigate("/");
     }
-  }, [loginForm.fulfilled]);
-
+  }, [loginForm, navigate]);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await dispatch(loginUser(data));
+    dispatch(loginUser(data));
   };
 
   return (
@@ -34,7 +33,7 @@ const Auth = () => {
       <div className="head-bg"></div>
       <div className="w-full md:w-[34.5rem] h-full md:h-[100vh] bg-blue rounded-tl-[2.5rem] md:rounded-tl-[2.5rem] rounded-tr-[2.5rem] md:rounded-tr-none rounded-bl-none md:rounded-bl-[2.5rem]">
         <div className="flex justify-center mt-[7rem]">
-          {/* <img src={logo} alt="Logo" /> */}
+          <img src={logo} alt="Logo" />
         </div>
         <div className="flex justify-center items-center">
           <form
@@ -71,11 +70,7 @@ const Auth = () => {
                 required
               />
             </div>
-            <Button
-              onClick={handleSubmit(onSubmit)}
-              label="Войти"
-              disabled={false}
-            />
+            <Button label="Войти" disabled={false} />
           </form>
         </div>
       </div>

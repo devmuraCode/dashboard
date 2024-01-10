@@ -2,7 +2,7 @@ import { FC } from "react";
 
 interface IButtonProps {
   label: string;
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
 }
 const Button: FC<IButtonProps> = ({ label, onClick, disabled }) => {

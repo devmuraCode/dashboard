@@ -22,3 +22,13 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
+export const getPost = createAsyncThunk('posts/fetchAll', async () => {
+  try {
+    const response = await httpClient.get("/api/v1/internal/category-list/");
+    return response.data;
+    
+  } catch (error) {
+    throw new Error("Failed to fetch users");
+  }
+});
+
